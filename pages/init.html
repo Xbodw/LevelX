@@ -1,0 +1,78 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>LevelX</title>
+    <meta name="referrer" content="no-referrer">
+    <link rel="stylesheet" href="../style/github.min.css">
+    <style type="text/css">
+        pre>code {
+            font-family: 'Consolas', 'Microsoft YaHei UI Light';
+        }
+
+        body {
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+
+<body>
+    <pre><code id="init" language="json"></code></pre>
+    <script src="../scripts/highlight.min.js"></script>
+    <script type="text/javascript">
+        if (localStorage.getItem('visited') == 'true') {
+            index = "index";
+        } else {
+            localStorage.setItem('visited', 'true');
+            index = "new";
+        }
+        const init = document.querySelector('code#init');
+        const returnner = {
+            index: index,
+            language: navigator.language
+        };
+
+
+        function geter(index) {
+            try {
+                var url = "./" + index + ".html";
+                var xhr = new XMLHttpRequest();
+
+                xhr.open("GET", url, true);
+                xhr.responseType = "text";
+
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        window.location.href = url;
+                    } else {
+                        init.innerHTML = JSON.stringify(returnner, null, 4) + "\n\nGet Resource Failed: Error Code " + xhr.status;
+                        hljs.highlightAll();
+                    }
+                };
+
+                xhr.onerror = function () {
+                    init.innerHTML = JSON.stringify(returnner, null, 4) + "\n\nGet Resource Failed: " + xhr;
+                    hljs.highlightAll();
+                };
+
+                xhr.send();
+            } catch (ex) {
+                init.innerHTML = JSON.stringify(returnner, null, 4) + "\n\nGet Resource Failed: " + ex;
+                hljs.highlightAll();
+            }
+        }
+
+        window.addEventListener('load', function (eventhandler) {
+            init.innerHTML = JSON.stringify(returnner, null, 4);
+            setTimeout(function () {
+                init.innerHTML = JSON.stringify(returnner, null, 4) + "\n\nLevelX Starting...";
+                hljs.highlightAll();
+                geter(index);
+            },1500)
+            hljs.highlightAll();
+        })
+    </script>
+</body>
+
+</html>

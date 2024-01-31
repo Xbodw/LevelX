@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Welcome</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+    }
+    
+    .container {
+      height: 100vh; /* 让容器充满全屏 */
+      display: flex;
+      justify-content: center; /* 水平居中 */
+      align-items: center; /* 垂直居中 */
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .step {
+      display: none;
+      text-align: center;
+    }
+    
+    .active {
+      display: block;
+    }
+    
+    .button-container {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+    
+    .button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    
+    .button:hover {
+      background-color: #0056b3;
+    }
+    
+    /* 新加的部分 */
+    #prevButton {
+      display: none;
+    }
+    
+    #nextButton:last-child {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="step active">
+      <h2>步骤 1</h2>
+      <p>这是第一个步骤的内容。</p>
+    </div>
+    <div class="step">
+      <h2>步骤 2</h2>
+      <p>这是第二个步骤的内容。</p>
+    </div>
+    <div class="step">
+      <h2>步骤 3</h2>
+      <p>这是第三个步骤的内容。</p>
+    </div>
+    <div class="button-container">
+      <button class="button" id="prevButton">上一步</button>
+      <button class="button" id="nextButton">下一步</button>
+    </div>
+  </div>
+  
+  <script>
+    const steps = document.querySelectorAll('.step');
+    const prevButton = document.getElementById('prevButton');
+    const nextButton = document.getElementById('nextButton');
+    
+    let currentStep = 0;
+    
+    showStep(currentStep);
+    
+    function showStep(stepIndex) {
+      steps.forEach((step, index) => {
+        if (index === stepIndex) {
+          step.classList.add('active');
+        } else {
+          step.classList.remove('active');
+        }
+      });
+      
+      if (stepIndex === 0) {
+        prevButton.style.display = 'none';
+      } else {
+        prevButton.style.display = 'inline-block';
+      }
+      
+      if (stepIndex === steps.length - 1) {
+        nextButton.innerText = '开始';
+        //nextButton.style.display = 'none';
+      } else {
+        nextButton.innerText = '下一步';
+        nextButton.style.display = 'inline-block';
+      }
+    }
+    
+    prevButton.addEventListener('click', () => {
+      if (currentStep > 0) {
+        currentStep--;
+        showStep(currentStep);
+      }
+    });
+    
+    nextButton.addEventListener('click', () => {
+      if (currentStep < steps.length - 1) {
+        currentStep++;
+        showStep(currentStep);
+      } else {
+        window.location.href = 'index.html';
+      }
+    });
+  </script>
+</body>
+</html>
